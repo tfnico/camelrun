@@ -44,8 +44,9 @@ public class MyRouteBuilder extends RouteBuilder {
         // (leaving them in place - see the 'noop' flag)
         // then performs content based routing on the message
         // using XPath
-        from("file:src/data?noop=true").
+        from("file:src/data?preMove=.pre&move=.done&readLock=changed&readLockCheckInterval=5000").
             log("Wahey! I got something: ${file:name}").
+            split(xpath("//person")).
             choice().
                 when(xpath("/person/city = 'London'")).
                     to("file:target/messages/uk").
